@@ -57,13 +57,21 @@ export default class RoomsScreen extends React.Component {
     this.state = {
       data: [{imageUrl:'http://something.com',title:'',description:'',beds:'',facilities:[]}]
     }
+    this._getData()
   }
 
   _getData = async () =>{
-    const response = await fetch('https://proyecto3.azurewebsites.net/api/rooms')
-    console.log(response)
+    const response = await fetch('https://proyecto3.azurewebsites.net/api/rooms',{
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    const result = await response.json()
+    console.log(result)
     this.setState({
-      data: response
+      data: result
     })
   }
 
@@ -79,13 +87,8 @@ export default class RoomsScreen extends React.Component {
   }
 
   render() {
-    if(rooms.length > 0){
-      this.setState({
-        data: rooms
-      })
-    }
     return (
-      <View style={{ flex: 1, alignItems: "center" }}>
+      <View style={{ flex: 1 }}>
         <Header
           leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.openDrawer() }}
           centerComponent={{ text: 'Rooms', style: { color: '#fff' } }}
